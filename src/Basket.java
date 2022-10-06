@@ -1,7 +1,6 @@
 import java.io.*;
-import java.util.*;
 
-public class Basket {
+public class Basket implements Serializable {
     private String[] productNames;
     private int[] productPrices;
     private int[] productAmount;
@@ -37,35 +36,15 @@ public class Basket {
         System.out.println("Общая сумма: " + total + " руб.");
     }
 
-    public void saveTxt(File textFile) throws FileNotFoundException {
-        try (PrintWriter writer = new PrintWriter(textFile)) {
-            for (String productName : productNames) {
-                writer.print(productName + " ");
-            }
-            writer.println();
-            for (int productPrice : productPrices) {
-                writer.print(productPrice + " ");
-            }
-            writer.println();
-            for (int amount : productAmount) {
-                writer.print(amount + " ");
-            }
+    public void saveBin(File file) throws IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
+            out.writeObject(this);
         }
     }
 
-    static Basket loadFromTxtFile(File textFile) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new FileReader(textFile))) {
-            String[] savedNames = scanner.nextLine().split(" ");
-            String[] stringPrices = scanner.nextLine().split(" ");
-            String[] stringAmount = scanner.nextLine().split(" ");
-            int[] savedPrices = Arrays.stream(stringPrices)
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
-            int[] savedAmount = Arrays.stream(stringAmount)
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
-            Basket basket = new Basket(savedNames, savedPrices);
-            basket.productAmount = savedAmount;
+    public static Basket loadFromBinFile(File file) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            Basket basket = (Basket) in.readObject();
             return basket;
         }
     }

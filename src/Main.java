@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        File textFile = new File("D://Apps//NewProductBasket", "basket.txt");
+        File binFile = new File("D://Apps//NewProductBasket", "basket.bin");
         String[] products = {"Хлеб", "Яйца", "Молоко", "Творог", "Сахар", "Мука", "Томаты", "Яблоки"};
         int[] prices = {70, 90, 80, 150, 80, 120, 300, 230};
         System.out.println("№ \tТовар \t Цена\n-------------------------");
@@ -14,13 +14,13 @@ public class Main {
         }
         System.out.println("-------------------------");
         Basket basicBasket = new Basket(products, prices);
-        if (textFile.exists()) {
-            basicBasket = basicBasket.loadFromTxtFile(textFile);
+        if (binFile.exists()) {
+            basicBasket = basicBasket.loadFromBinFile(binFile);
             System.out.println("Напоминаем, что в Вашей корзине уже лежат некоторые товары.");
             basicBasket.printCart();
         } else {
             try {
-                textFile.createNewFile();
+                binFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -39,7 +39,7 @@ public class Main {
             int productNum = Integer.parseInt(inputParts[0]) - 1;
             int amount = Integer.parseInt(inputParts[1]);
             basicBasket.addToCart(productNum, amount);
-            basicBasket.saveTxt(textFile);
+            basicBasket.saveBin(binFile);
         }
         System.out.println("Вы завершили покупки.");
         basicBasket.printCart();
