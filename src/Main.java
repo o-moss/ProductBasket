@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -66,7 +67,7 @@ public class Main {
         }
         System.out.println("Вы завершили покупки.");
         basicBasket.printCart();
-        if(!csvFile.exists()) {
+        if (!csvFile.exists()) {
             try {
                 csvFile.createNewFile();
             } catch (IOException e) {
